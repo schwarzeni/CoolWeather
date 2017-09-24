@@ -1,6 +1,8 @@
 package com.example.coolweather;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,6 +59,29 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // 如果当前系统版本号大于等于21，改变系统状态栏的UI
+        if (Build.VERSION.SDK_INT >= 21) {
+            // 获取当前活动的DecorView
+            View decorView = getWindow().getDecorView();
+             //使用setSystemUiVisibility来改变系统UI显示
+             //将活动布局显示到状态栏上
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            // 将状态栏设置为透明
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+
+            // Google 官网全屏解决方案
+//            decorView.setSystemUiVisibility(
+//                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+//                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+
         setContentView(R.layout.activity_weather);
         // 初始化各个组件
         weatherLayout = (ScrollView) findViewById(R.id.weather_layout);
