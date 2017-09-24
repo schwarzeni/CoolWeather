@@ -31,6 +31,8 @@ public class Utility {
 
     public static final String API_BING_IMAGE = "http://guolin.tech/api/bing_pic";
 
+    public static  String CURRENT_COUNTY_WEATHER_ID;
+
     private static final String TAG = "Utility";
 
     /**

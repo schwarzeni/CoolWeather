@@ -2,9 +2,12 @@ package com.example.coolweather;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,10 +119,17 @@ public class ChooseAreaFragment extends Fragment {
                         break;
                     case LEVEL_COUNTY:
                         String weatherId = countyList.get(position).getWeatherId();
-                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                        intent.putExtra("weather_id", weatherId);
-                        startActivity(intent);
-                        getActivity().finish();
+                        if (getActivity() instanceof  MainActivity) {
+                            Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                            intent.putExtra("weather_id", weatherId);
+                            startActivity(intent);
+                            getActivity().finish();
+                        } else if (getActivity() instanceof  WeatherActivity) {
+                            WeatherActivity activity = (WeatherActivity) getActivity();
+                            activity.drawerLayout.closeDrawers();
+                            activity.swipeRefresh.setRefreshing(true);
+                            activity.requestWeather(weatherId);
+                        }
                         break;
                     default:
                 }
