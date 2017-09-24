@@ -6,4 +6,14 @@
     <string name="nation">中国</string>
     <string name="loading_error">加载失败</string>
     <string name="loading">正在加载</string>
+    <string name="forcast">预报</string>
+    <string name="air_condition">空气质量</string>
+    <string name="aqi_figure">AQI 指数</string>
+    <string name="pm25_figure">PM2.5 指数</string>
+    <string name="suggestions">生活建议</string>
+    <string name="get_weather_err">获取天气失败</string>
+    <string name="comfort_degree">舒适度</string>
+    <string name="car_wash_degree">洗车指数</string>
+    <string name="sport_advice">运动建议</string>
+    <string name="fail_to_load_img">加载图片失败</string>
 </resources>

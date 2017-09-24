@@ -1,10 +1,10 @@
 package com.example.coolweather;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,6 +114,13 @@ public class ChooseAreaFragment extends Fragment {
                         selectedCity = cityList.get(position);
                         queryCounties();
                         break;
+                    case LEVEL_COUNTY:
+                        String weatherId = countyList.get(position).getWeatherId();
+                        Intent intent = new Intent(getActivity(), WeatherActivity.class);
+                        intent.putExtra("weather_id", weatherId);
+                        startActivity(intent);
+                        getActivity().finish();
+                        break;
                     default:
                 }
             }
@@ -204,12 +211,14 @@ public class ChooseAreaFragment extends Fragment {
     }
 
     private void queryFromServer(String address, final String type) {
+        showProgressDialog();
         HttpUtil.sendOkHttpRequest(address, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
                         closeProgressDialog();
                         Toast.makeText(getContext(), R.string.loading_error, Toast.LENGTH_SHORT).show();
                     }

@@ -1,14 +1,14 @@
 package com.example.coolweather.util;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.example.coolweather.db.City;
 import com.example.coolweather.db.County;
 import com.example.coolweather.db.Province;
+import com.example.coolweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -23,7 +23,16 @@ public class Utility {
 
     public static final String COUNTY = "county";
 
+    public static final String API_KEY = "60526c8a0281412b822e70e5ba97b1d5";
+
+    public static final String API_SITE = "https://free-api.heweather.com/v5/weather?";
+
+    public static final String API_RESPONSE_STATS = "ok";
+
+    public static final String API_BING_IMAGE = "http://guolin.tech/api/bing_pic";
+
     private static final String TAG = "Utility";
+
     /**
      *
      * 解析和处理服务器返回的省级数据
@@ -43,7 +52,7 @@ public class Utility {
                     province.save();
                 }
                 return true;
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -71,7 +80,7 @@ public class Utility {
                     city.save();
                 }
                 return true;
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -99,10 +108,46 @@ public class Utility {
                     county.save();
                 }
                 return true;
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return false;
+    }
+
+    /**
+     *
+     *  返回JSON数据解析成Weather的实体类
+     *
+     * @param response String
+     * @return Weather
+     */
+    public static Weather handleWeatherResponse(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather5");
+            String weatherContent = jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent, Weather.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @param weatherId 当前城市的ID
+     * @return 请求的url
+     */
+    public static String getWeatherUrl(String weatherId) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder
+                .append(API_SITE)
+                .append("city=")
+                .append(weatherId)
+                .append("&")
+                .append("key=")
+                .append(API_KEY);
+        return stringBuilder.toString();
     }
 }
