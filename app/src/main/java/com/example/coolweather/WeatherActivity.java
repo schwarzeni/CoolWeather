@@ -1,5 +1,6 @@
 package com.example.coolweather;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.coolweather.gson.Forecast;
 import com.example.coolweather.gson.Weather;
+import com.example.coolweather.service.AutoUpdateService;
 import com.example.coolweather.util.HttpUtil;
 import com.example.coolweather.util.Utility;
 
@@ -260,6 +262,10 @@ public class WeatherActivity extends AppCompatActivity {
                             editor.putString("weather_id", weather.basic.weatherId);
                             editor.apply();
                             Utility.CURRENT_COUNTY_WEATHER_ID = weather.basic.weatherId;
+
+                            // 定时更新天气数据
+                            Intent intent = new Intent(WeatherActivity.this, AutoUpdateService.class);
+                            startService(intent);
                             showWeatherInfo(weather);
                         } else {
                             Toast.makeText(WeatherActivity.this, getString(R.string.get_weather_err), Toast.LENGTH_SHORT).show();
